@@ -1,0 +1,56 @@
+//https://leetcode.com/problems/minimum-domino-rotations-for-equal-row/description/?envType=daily-question&envId=2025-05-03
+
+class Solution {
+    public int minDominoRotations(int[] tops, int[] bottoms) {
+        int n = tops.length;
+
+        int max = 0;
+        int maxi = -1;
+
+        HashMap<Integer,Integer> hm = new HashMap<>();
+
+        for(int ind=0;ind<n;ind++){
+            if(tops[ind] != bottoms[ind]){
+                hm.put(tops[ind],hm.getOrDefault(tops[ind],0)+1);
+                hm.put(bottoms[ind],hm.getOrDefault(bottoms[ind],0)+1);
+                int freq = hm.get(bottoms[ind]);
+                if(max < freq){
+                    max = freq;
+                    maxi = bottoms[ind];
+                }
+                freq = hm.get(tops[ind]);
+                if(max < freq){
+                    max = freq;
+                    maxi = tops[ind];
+                }
+            }else{
+                hm.put(bottoms[ind],hm.getOrDefault(bottoms[ind],0)+1);
+                int freq = hm.get(bottoms[ind]);
+                if(max < freq){
+                    max = freq;
+                    maxi = bottoms[ind];
+                }
+            }
+            
+        }
+
+        int tc = 0;
+        int bc = 0;
+
+        for(int ind=0;ind<n;ind++){
+            if(tops[ind] != maxi && bottoms[ind] != maxi){
+                return -1;
+            }
+            if(tops[ind] == maxi){
+                tc++;
+            }
+            if(bottoms[ind] == maxi){
+                bc++;
+            }
+        }
+
+
+       // System.out.println("max "+max+" maxi "+maxi);
+        return n-Math.max(tc,bc);
+    }
+}
